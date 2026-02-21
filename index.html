@@ -1,0 +1,29 @@
+!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suite de chiffres en boucle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <h1>Suite de chiffres (x100)</h1>
+  <p id="numbers"></p>
+
+  <!-- lien caché : rb.gy/7cejiy -->
+  <a href="https://rb.gy/7cejiy" style="display:none;" aria-hidden="true" tabindex="-1">lien caché</a>
+
+  <script>
+    const suite = "29233749694833768419269212996089854527527105575531";
+    const repetitions = 100;
+    document.getElementById("numbers").textContent = Array(repetitions).fill(suite).join(" ");
+  </script>
+</body>
+</html>
