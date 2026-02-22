@@ -1,29 +1,168 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Suite de chiffres en boucle</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2rem;
-      line-height: 1.6;
-      word-break: break-all;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Énigme Code Secret</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 2rem;
+    line-height: 1.6;
+    word-break: break-all;
+    background: #fff;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+
+  #enigme {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  #numbers {
+    font-size: 14px;
+    margin-top: 20px;
+    display: none;
+    word-break: break-all;
+  }
+
+  .secret-box {
+    margin-top: 30px;
+    padding: 20px;
+    border: 2px solid lime;
+    font-weight: bold;
+    animation: fadeIn 0.6s ease forwards;
+    display: inline-block;
+  }
+
+  .secret-box a {
+    text-decoration: none;
+    font-weight: bold;
+    color: lime;
+  }
+
+  .secret-box .cadenas {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 </head>
 <body>
-  <h1>Suite de chiffres (x100)</h1>
-  <p id="numbers"></p>
 
-  <!-- lien caché : rb.gy/7cejiy -->
-  <a href="https://rb.gy/7cejiy" style="display:none;" aria-hidden="true" tabindex="-1">lien caché</a>
+<p id="enigme">
+Mon code contient 4 symboles numériques.<br>
+Premier = 3.<br>
+Deuxième = trois fois le premier.<br>
+Troisième = le double du deuxième.<br>
+Quatrième = le tiers du troisième.<br>
+Quel est le code secret ?</p>
 
-  <script>
-    const suite = "29233749694833768419269212996089854527527105575531";
-    const repetitions = 100;
-    document.getElementById("numbers").textContent = Array(repetitions).fill(suite).join(" ");
-  </script>
+<p id="numbers">
+2923374969483376841926921konami2996089854527527105575531
+</p>
+
+<script>
+/* -------------------------
+   Détection du code secret 3993
+-------------------------- */
+const secretCode = "3993";
+let inputBuffer = "";
+
+document.addEventListener("keydown", function(e) {
+  if(e.key >= "0" && e.key <= "9") {
+    inputBuffer += e.key;
+
+    // on garde seulement les 4 derniers chiffres
+    if(inputBuffer.length > 4) inputBuffer = inputBuffer.slice(-4);
+
+    if(inputBuffer === secretCode) {
+      document.getElementById("numbers").style.display = "block";
+      document.body.style.background = "#000";
+      document.body.style.color = "lime";
+    }
+  }
+});
+
+/* -------------------------
+   Code Konami classique
+-------------------------- */
+const konami = [
+  "ArrowUp","ArrowUp",
+  "ArrowDown","ArrowDown",
+  "ArrowLeft","ArrowRight",
+  "ArrowLeft","ArrowRight",
+  "b","a"
+];
+
+let buffer = [];
+
+document.addEventListener("keydown", function(e){
+  buffer.push(e.key);
+  if(buffer.length > konami.length) buffer.shift();
+
+  if(JSON.stringify(buffer) === JSON.stringify(konami)) {
+    const hidden = atob("aHR0cHM6Ly9yYi5neS83Y2VqaXk="); // lien Base64
+    const imgurLink = "https://imgur.com/a/lLCVI8n";        // lien Imgur
+
+    const box = document.createElement("div");
+    box.className = "secret-box";
+    
+    // Cadenas cliquable → Imgur, texte cliquable → Base64
+    box.innerHTML = `<a href="${imgurLink}" target="_blank" class="cadenas">🔓</a>
+                     <a href="${hidden}" target="_blank">ACCÈS DÉVERROUILLÉ</a>`;
+    
+    document.body.appendChild(box);
+    buffer = [];
+  }
+});
+
+/* -------------------------
+   Blocage des raccourcis DevTools
+-------------------------- */
+(function() {
+  // Fonction pour bloquer les touches d'inspection
+  function blockDevTools(e) {
+    // F12
+    if (e.key === 'F12') {
+      e.preventDefault();
+      alert("Ce site tu n'inspectera pas !");
+      return false;
+    }
+
+    // Ctrl+Shift+[I/J/C/M] : DevTools dans Chrome/Edge/Firefox
+    if (e.ctrlKey && e.shiftKey && ['I','J','C','M'].includes(e.key.toUpperCase())) {
+      e.preventDefault();
+      alert("Ce site tu n'inspectera pas !");
+      return false;
+    }
+
+    // Ctrl+[U/S/E/K/F] : voir source / console
+    if (e.ctrlKey && ['U','S','E','K','F'].includes(e.key.toUpperCase())) {
+      e.preventDefault();
+      alert("Ce site tu n'inspectera pas !");
+      return false;
+    }
+  }
+
+  // Fonction pour bloquer le clic droit
+  function blockRightClick(e) {
+    e.preventDefault();
+    alert("Ce site tu n'inspectera pas !");
+    return false;
+  }
+
+  // Ajouter les événements au document
+  document.addEventListener('keydown', blockDevTools);
+  document.addEventListener('contextmenu', blockRightClick);
+})();
+</script>
+
 </body>
 </html>
